@@ -1,10 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="google-site-verification" content="google819f2fa71953e9f6" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RegexMind Ultra - Next-Gen Toolkit</title>
+    <title>RegExplain - Free AI Regex Visualizer, Generator & Tester</title>
+    
+    <!-- Google AdSense Script -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3983893201076446"
+     crossorigin="anonymous"></script>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Convert complex regular expressions into plain English instantly. Free AI regex tester, generator, and code exporter by Yusuf Jamshed.">
+    <meta name="keywords" content="regex explainer, regex tester, regex generator, regular expression english, regex tutorial, python regex, js regex">
+    <meta name="author" content="Yusuf Jamshed">
+    <meta name="robots" content="index, follow">
+    <meta name="google-site-verification" content="google819f2fa71953e9f6" />
+
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -28,12 +39,7 @@
             --glow-color: rgba(99, 102, 241, 0.15);
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            transition: background 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; transition: background 0.3s, color 0.3s; }
 
         body {
             background-color: var(--bg-dark);
@@ -47,275 +53,81 @@
         }
 
         header {
-            position: sticky;
-            top: 0;
-            backdrop-filter: blur(16px);
-            background: var(--panel-bg);
-            border-bottom: 1px solid var(--border-glow);
-            padding: 16px 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 50;
+            position: sticky; top: 0; backdrop-filter: blur(16px);
+            background: var(--panel-bg); border-bottom: 1px solid var(--border-glow);
+            padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; z-index: 50;
         }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 1.4rem;
-            font-weight: 800;
-        }
+        .logo { display: flex; align-items: center; gap: 12px; font-size: 1.4rem; font-weight: 800; }
+        .logo-icon { width: 38px; height: 38px; background: var(--accent-gradient); border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px var(--glow-color); }
+        .gradient-text { background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        .logo-icon {
-            width: 38px;
-            height: 38px;
-            background: var(--accent-gradient);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 15px var(--glow-color);
-        }
+        .btn-ui { background: var(--input-bg); border: 1px solid var(--border-glow); color: var(--text-main); padding: 8px 16px; border-radius: 12px; font-weight: 600; cursor: pointer; }
+        .btn-ui:hover { border-color: #6366f1; box-shadow: 0 0 12px var(--glow-color); }
 
-        .gradient-text {
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        .main-container { max-width: 900px; margin: 40px auto; padding: 0 20px; width: 100%; }
+        .hero { text-align: center; margin-bottom: 32px; }
+        .badge { display: inline-block; padding: 6px 16px; background: rgba(99, 102, 241, 0.1); border: 1px solid var(--border-glow); border-radius: 30px; color: #818cf8; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; margin-bottom: 16px; }
 
-        .controls {
-            display: flex;
-            gap: 12px;
-        }
+        .glass-card { background: var(--panel-bg); backdrop-filter: blur(20px); border: 1px solid var(--border-glow); border-radius: 24px; padding: 32px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); margin-bottom: 40px; }
 
-        .btn-ui {
-            background: var(--input-bg);
-            border: 1px solid var(--border-glow);
-            color: var(--text-main);
-            padding: 8px 16px;
-            border-radius: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            outline: none;
-        }
+        .presets { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+        .preset-btn { background: rgba(99, 102, 241, 0.08); border: 1px solid var(--border-glow); color: var(--text-main); padding: 6px 14px; border-radius: 8px; font-size: 0.8rem; cursor: pointer; font-weight: 600; }
+        .preset-btn:hover { background: #6366f1; color: white; }
 
-        .btn-ui:hover {
-            border-color: #6366f1;
-            box-shadow: 0 0 12px var(--glow-color);
-        }
+        .field-group { margin-bottom: 24px; }
+        .field-header { display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
 
-        .main-container {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 0 20px;
-            width: 100%;
-        }
+        input[type="text"], textarea { width: 100%; background: var(--input-bg); border: 1px solid var(--border-glow); border-radius: 16px; padding: 16px; color: var(--text-main); font-family: 'JetBrains Mono', monospace; font-size: 0.95rem; outline: none; }
+        input[type="text"]:focus, textarea:focus { border-color: #6366f1; box-shadow: 0 0 15px var(--glow-color); }
 
-        .hero {
-            text-align: center;
-            margin-bottom: 32px;
-        }
+        .explanation-box { background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1)); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 16px; padding: 20px; margin-bottom: 24px; }
 
-        .badge {
-            display: inline-block;
-            padding: 6px 16px;
-            background: rgba(99, 102, 241, 0.1);
-            border: 1px solid var(--border-glow);
-            border-radius: 30px;
-            color: #818cf8;
-            font-size: 0.75rem;
-            font-weight: 800;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-bottom: 16px;
-        }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+        @media (max-width: 640px) { .grid-2 { grid-template-columns: 1fr; } }
 
-        .hero h1 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 12px;
-            line-height: 1.2;
-        }
+        .preview-box { background: var(--input-bg); border: 1px solid var(--border-glow); border-radius: 16px; padding: 16px; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; min-height: 100px; white-space: pre-wrap; }
+        mark { background: rgba(236, 72, 153, 0.4); color: #ffffff; padding: 2px 4px; border-radius: 4px; border: 1px solid #ec4899; }
+        pre { background: #05070a; border-radius: 12px; padding: 16px; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #38bdf8; overflow-x: auto; }
 
-        .hero p {
-            color: var(--text-muted);
-            font-size: 1rem;
-        }
+        .article-section { background: var(--panel-bg); border: 1px solid var(--border-glow); border-radius: 20px; padding: 28px; margin-bottom: 24px; line-height: 1.7; }
+        .article-section h2 { font-size: 1.4rem; margin-bottom: 12px; color: var(--text-main); }
+        .article-section p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 12px; }
 
-        .glass-card {
-            background: var(--panel-bg);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border-glow);
-            border-radius: 24px;
-            padding: 32px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 30px var(--glow-color);
-        }
+        footer { border-top: 1px solid var(--border-glow); background: var(--panel-bg); padding: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+        .footer-links { display: flex; gap: 16px; font-size: 0.85rem; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; cursor: pointer; }
+        .footer-links a:hover { color: #818cf8; }
+        .signature { background: var(--accent-gradient); padding: 8px 18px; border-radius: 30px; color: white; font-weight: 700; font-size: 0.85rem; }
 
-        .presets {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-bottom: 24px;
-        }
-
-        .preset-btn {
-            background: rgba(99, 102, 241, 0.08);
-            border: 1px solid var(--border-glow);
-            color: var(--text-main);
-            padding: 6px 14px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .preset-btn:hover {
-            background: #6366f1;
-            color: white;
-        }
-
-        .field-group {
-            margin-bottom: 24px;
-        }
-
-        .field-header {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-            letter-spacing: 0.5px;
-        }
-
-        input[type="text"], textarea {
-            width: 100%;
-            background: var(--input-bg);
-            border: 1px solid var(--border-glow);
-            border-radius: 16px;
-            padding: 16px;
-            color: var(--text-main);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.95rem;
-            outline: none;
-        }
-
-        input[type="text"]:focus, textarea:focus {
-            border-color: #6366f1;
-            box-shadow: 0 0 15px var(--glow-color);
-        }
-
-        .explanation-box {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1));
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 24px;
-        }
-
-        .explanation-box h3 {
-            font-size: 0.9rem;
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 24px;
-        }
-
-        @media (max-width: 640px) {
-            .grid-2 { grid-template-columns: 1fr; }
-            .hero h1 { font-size: 1.8rem; }
-        }
-
-        .preview-box {
-            background: var(--input-bg);
-            border: 1px solid var(--border-glow);
-            border-radius: 16px;
-            padding: 16px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
-            min-height: 100px;
-            white-space: pre-wrap;
-        }
-
-        mark {
-            background: rgba(236, 72, 153, 0.4);
-            color: #ffffff;
-            padding: 2px 4px;
-            border-radius: 4px;
-            border: 1px solid #ec4899;
-        }
-
-        pre {
-            background: #05070a;
-            border-radius: 12px;
-            padding: 16px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
-            color: #38bdf8;
-            overflow-x: auto;
-        }
-
-        footer {
-            border-top: 1px solid var(--border-glow);
-            background: var(--panel-bg);
-            backdrop-filter: blur(16px);
-            padding: 20px 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .signature {
-            background: var(--accent-gradient);
-            padding: 8px 18px;
-            border-radius: 30px;
-            color: white;
-            font-weight: 700;
-            font-size: 0.85rem;
-            box-shadow: 0 0 15px var(--glow-color);
-        }
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
+        .modal-content { background: var(--bg-dark); border: 1px solid var(--border-glow); padding: 24px; border-radius: 20px; max-width: 600px; width: 100%; max-height: 80vh; overflow-y: auto; }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
     <header>
         <div class="logo">
             <div class="logo-icon">⚡</div>
-            <span>Regex<span class="gradient-text">Mind</span></span>
+            <span>Reg<span class="gradient-text">Explain</span></span>
         </div>
-        <div class="controls">
+        <div style="display:flex; gap:12px;">
             <select id="langSelect" onchange="changeLang(this.value)" class="btn-ui">
                 <option value="en">🌐 English</option>
                 <option value="hi">🌐 हिंदी</option>
-                <option value="es">🌐 Español</option>
             </select>
             <button onclick="toggleTheme()" class="btn-ui" id="themeBtn">🌙 Mode</button>
         </div>
     </header>
 
-    <!-- Main Content -->
     <div class="main-container">
         <div class="hero">
-            <div class="badge" id="i18n-badge">Next-Gen Regex Toolkit</div>
-            <h1 id="i18n-title">Master Regex in <span class="gradient-text">Plain Human Language</span></h1>
-            <p id="i18n-sub">Instantly explain, test, and generate complex regular expressions using smart AI parsing.</p>
+            <div class="badge">AI-Powered Developer Utility</div>
+            <h1>Master Regex in <span class="gradient-text">Plain Human Language</span></h1>
+            <p>Instantly parse, explain, test, and generate complex regular expressions for JavaScript, Python, and PHP.</p>
         </div>
 
         <div class="glass-card">
-            <!-- Presets -->
             <div class="presets">
                 <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted);">PRESETS:</span>
                 <button onclick="setPreset('email')" class="preset-btn">Email</button>
@@ -324,39 +136,33 @@
                 <button onclick="setPreset('date')" class="preset-btn">Date</button>
             </div>
 
-            <!-- Input -->
             <div class="field-group">
                 <div class="field-header">
-                    <span id="i18n-input-label">Regular Expression Pattern</span>
+                    <span>Regular Expression Pattern</span>
                     <span onclick="copyRegex()" style="color: #818cf8; cursor: pointer;">📋 Copy Regex</span>
                 </div>
                 <input type="text" id="regexInput" value="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" oninput="runRegex()">
             </div>
 
-            <!-- Human Explanation -->
             <div class="explanation-box">
-                <h3>💡 <span id="i18n-exp-title">Human Explanation</span></h3>
-                <p id="explanationOutput" style="font-size: 0.9rem; color: var(--text-muted); leading-height: 1.5;">
-                    Matches a standard email address structure starting with alphanumeric characters followed by '@' and a domain name.
-                </p>
+                <h3>💡 Explanation</h3>
+                <p id="explanationOutput">Matches a standard email address structure starting with alphanumeric characters followed by '@' and a domain extension.</p>
             </div>
 
-            <!-- Testing Grid -->
             <div class="grid-2">
                 <div>
-                    <div class="field-header" id="i18n-test-label">Test String Input</div>
+                    <div class="field-header">Test Input Text</div>
                     <textarea id="testInput" rows="4" oninput="runRegex()">Contact us at support@yusufjamshed.com or sales@example.org for details.</textarea>
                 </div>
                 <div>
-                    <div class="field-header" id="i18n-match-label">Live Match Preview</div>
+                    <div class="field-header">Live Match Preview</div>
                     <div id="matchOutput" class="preview-box"></div>
                 </div>
             </div>
 
-            <!-- Export Code -->
             <div class="field-group" style="margin-bottom: 0;">
                 <div class="field-header">
-                    <span id="i18n-export-label">Export Code Snippet</span>
+                    <span>Export Code Snippet</span>
                     <div>
                         <span onclick="genSnippet('js')" style="cursor: pointer; margin-right: 8px; color: #818cf8;">JS</span>
                         <span onclick="genSnippet('python')" style="cursor: pointer; margin-right: 8px; color: #818cf8;">Python</span>
@@ -367,53 +173,39 @@
 const matches = text.match(regex);</code></pre>
             </div>
         </div>
+
+        <div class="article-section">
+            <h2>What is Regular Expression (Regex)?</h2>
+            <p>Regular Expressions (commonly known as <strong>Regex</strong>) are specialized sequences of characters that define search patterns. Software developers, data analysts, and system administrators use Regex for pattern matching in strings, input validation, and string parsing across various programming languages like JavaScript, Python, PHP, and Java.</p>
+        </div>
+
+        <div class="article-section">
+            <h2>How RegExplain Helps Developers</h2>
+            <p>Writing and debugging regular expressions can often be tedious and error-prone. <strong>RegExplain</strong> converts cryptic regex tokens into clear, human-readable English descriptions. You can test your expressions live against sample inputs, highlight matches dynamically, and copy ready-to-use code snippets directly into your development workflow.</p>
+        </div>
     </div>
 
-    <!-- Footer -->
+    <div id="legalModal" class="modal">
+        <div class="modal-content">
+            <h2 id="modalTitle" style="margin-bottom: 12px;"></h2>
+            <div id="modalBody" style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6;"></div>
+            <button onclick="closeModal()" class="btn-ui" style="margin-top: 20px;">Close</button>
+        </div>
+    </div>
+
     <footer>
-        <div style="font-size: 0.85rem; color: var(--text-muted);">
-            © 2026 <strong>RegexMind</strong>. High-Performance Developer Microtool.
+        <div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 6px;">© 2026 <strong>RegExplain</strong>. High-Performance Developer Microtool.</p>
+            <div class="footer-links">
+                <a onclick="showModal('privacy')">Privacy Policy</a> • 
+                <a onclick="showModal('terms')">Terms of Service</a> • 
+                <a onclick="showModal('contact')">Contact Us</a>
+            </div>
         </div>
-        <div class="signature">
-            ✨ Created by Yusuf Jamshed
-        </div>
+        <div class="signature">✨ Created by Yusuf Jamshed</div>
     </footer>
 
-    <!-- JS Engine -->
     <script>
-        const translations = {
-            en: {
-                badge: "Next-Gen Regex Toolkit",
-                title: 'Master Regex in <span class="gradient-text">Plain Human Language</span>',
-                sub: "Instantly explain, test, and generate complex regular expressions using smart AI parsing.",
-                input: "Regular Expression Pattern",
-                exp: "Human Explanation",
-                test: "Test String Input",
-                match: "Live Match Preview",
-                export: "Export Code Snippet"
-            },
-            hi: {
-                badge: "नेक्स्ट-जेन रेगेक्स टूलकिट",
-                title: 'रेगेक्स को <span class="gradient-text">आसान भाषा</span> में समझें',
-                sub: "जटिल रेगुलर एक्सप्रेशन को आसानी से समझें, टेस्ट करें और बनाएं।",
-                input: "रेगुलर एक्सप्रेशन पैटर्न दर्ज करें",
-                exp: "सरल हिंदी व्याख्या",
-                test: "टेस्ट स्ट्रिंग इनपुट",
-                match: "लाइव मैच पूर्वावलोकन",
-                export: "कोड स्निपेट एक्सपोर्ट करें"
-            },
-            es: {
-                badge: "Toolkit Regex de Última Generación",
-                title: 'Domina Regex en <span class="gradient-text">Lenguaje Humano</span>',
-                sub: "Explica, prueba y genera expresiones regulares complejas al instante.",
-                input: "Patrón de Expresión Regular",
-                exp: "Explicación Humana",
-                test: "Texto de Prueba",
-                match: "Vista Previa de Coincidencias",
-                export: "Exportar Fragmento de Código"
-            }
-        };
-
         const presetList = {
             email: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
             phone: "^\\+?[1-9]\\d{1,14}$",
@@ -421,26 +213,9 @@ const matches = text.match(regex);</code></pre>
             date: "^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$"
         };
 
-        let currentLang = 'en';
-
         function toggleTheme() {
             document.body.classList.toggle('light-mode');
-            const btn = document.getElementById('themeBtn');
-            btn.textContent = document.body.classList.contains('light-mode') ? '☀️ Mode' : '🌙 Mode';
-        }
-
-        function changeLang(lang) {
-            currentLang = lang;
-            const t = translations[lang];
-            document.getElementById('i18n-badge').innerHTML = t.badge;
-            document.getElementById('i18n-title').innerHTML = t.title;
-            document.getElementById('i18n-sub').innerHTML = t.sub;
-            document.getElementById('i18n-input-label').innerHTML = t.input;
-            document.getElementById('i18n-exp-title').innerHTML = t.exp;
-            document.getElementById('i18n-test-label').innerHTML = t.test;
-            document.getElementById('i18n-match-label').innerHTML = t.match;
-            document.getElementById('i18n-export-label').innerHTML = t.export;
-            runRegex();
+            document.getElementById('themeBtn').textContent = document.body.classList.contains('light-mode') ? '☀️ Mode' : '🌙 Mode';
         }
 
         function setPreset(type) {
@@ -458,16 +233,14 @@ const matches = text.match(regex);</code></pre>
                 const reg = new RegExp(pattern, 'g');
                 if (pattern && testStr) {
                     matchBox.innerHTML = testStr.replace(reg, m => `<mark>${m}</mark>`);
-                } else {
-                    matchBox.textContent = testStr;
-                }
+                } else { matchBox.textContent = testStr; }
 
                 if (pattern.includes('@')) {
-                    expBox.textContent = currentLang === 'hi' ? "यह पैटर्न ईमेल एड्रेस (उदा. name@domain.com) से मैच करता है।" : "Matches a standard email address structure.";
+                    expBox.textContent = "Matches a standard email address structure (e.g., user@domain.com).";
                 } else if (pattern.includes('\\d{4}')) {
-                    expBox.textContent = currentLang === 'hi' ? "यह तारीख (YYYY-MM-DD) फॉर्मेट से मैच करता है।" : "Matches date format YYYY-MM-DD.";
+                    expBox.textContent = "Matches dates formatted strictly as YYYY-MM-DD.";
                 } else {
-                    expBox.textContent = currentLang === 'hi' ? "कस्टम रेगेक्स एक्टिव है।" : "Custom regular expression pattern standard parsing active.";
+                    expBox.textContent = "Custom regular expression active. Pattern parsed successfully.";
                 }
             } catch (e) {
                 matchBox.innerHTML = `<span style="color: #ef4444; font-weight: bold;">Invalid Regex Pattern</span>`;
@@ -487,6 +260,26 @@ const matches = text.match(regex);</code></pre>
             navigator.clipboard.writeText(document.getElementById('regexInput').value);
             alert('Regex Copied!');
         }
+
+        function showModal(type) {
+            const modal = document.getElementById('legalModal');
+            const title = document.getElementById('modalTitle');
+            const body = document.getElementById('modalBody');
+
+            if(type === 'privacy') {
+                title.textContent = "Privacy Policy";
+                body.innerHTML = "RegExplain respects your privacy. We do not store or collect any text inputs, regular expressions, or personal data on external servers. All regex conversions and live string matching occur locally within your browser client environment. Third-party vendor services like Google AdSense may use cookies to serve relevant advertisements.";
+            } else if(type === 'terms') {
+                title.textContent = "Terms of Service";
+                body.innerHTML = "By using RegExplain, you agree that this microtool is provided 'as is' without warranty of any kind. Yusuf Jamshed and RegExplain are not responsible for software bugs or data validation errors resulting from patterns generated by this tool.";
+            } else if(type === 'contact') {
+                title.textContent = "Contact Us";
+                body.innerHTML = "For inquiries, feedback, or developer support, please reach out directly:<br><br><strong>Developer:</strong> Yusuf Jamshed<br><strong>Website:</strong> https://yusufjamshed4.github.io/regexplain.com/";
+            }
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() { document.getElementById('legalModal').style.display = 'none'; }
 
         runRegex();
     </script>
